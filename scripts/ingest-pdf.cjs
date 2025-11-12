@@ -1,15 +1,33 @@
 const fs = require("fs");
 const path = require("path");
-const pdfParseModule = require("pdf-parse");
-const pdfParse =
-  typeof pdfParseModule === "function"
-    ? pdfParseModule
-    : pdfParseModule.default;
 
 const PROJECT_ROOT = process.cwd();
 const PDF_DIR = path.join(PROJECT_ROOT, "src", "reference", "pdfs");
 const OUTPUT_DIR = path.join(PROJECT_ROOT, "src", "reference", "generated");
 const OUTPUT_FILE = path.join(OUTPUT_DIR, "pdfDocuments.json");
+
+const loadPdfParse = async () => {
+  const mod = await import("pdf-parse");
+
+  if (typeof mod.default === "function") {
+    return mod.default;
+  }
+
+  if (typeof mod.PDFParse === "function") {
+    const VerbosityLevel = mod.VerbosityLevel ?? { ERRORS: 0 };
+    return (buffer) => {
+      const parser = new mod.PDFParse({
+        data: buffer,
+        verbosity: VerbosityLevel.ERRORS ?? 0,
+      });
+      return parser.parseBuffer(buffer);
+    };
+  }
+
+  throw new Error(
+    "Could not load pdf-parse. Make sure it is installed correctly.",
+  );
+};
 
 const slugify = (value) =>
   value
@@ -34,7 +52,8 @@ const ensureDirectory = (dir) => {
 
 const readPdfFiles = () => {
   if (!fs.existsSync(PDF_DIR)) {
-    throw new Error(`PDF directory not found: ${PDF_DIR}`);
+    console.warn(`PDF directory not found: ${PDF_DIR}`);
+    return [];
   }
 
   return fs
@@ -46,10 +65,11 @@ const readPdfFiles = () => {
     }));
 };
 
-const extractPdfText = async (filePath) => {
+const extractPdfText = async (parser, filePath) => {
   const buffer = fs.readFileSync(filePath);
-  const result = await pdfParse(buffer);
-  return sanitizeContent(result.text);
+  const result = await parser(buffer);
+  const text = typeof result === "string" ? result : result?.text ?? "";
+  return sanitizeContent(text);
 };
 
 const buildDocumentEntry = (fileName, content) => {
@@ -66,6 +86,7 @@ const buildDocumentEntry = (fileName, content) => {
 
 const main = async () => {
   try {
+    const pdfParse = await loadPdfParse();
     const pdfFiles = readPdfFiles();
 
     if (!pdfFiles.length) {
@@ -79,7 +100,7 @@ const main = async () => {
 
     for (const { file, filePath } of pdfFiles) {
       console.log(`→ Extracting text from ${file} ...`);
-      const content = await extractPdfText(filePath);
+      const content = await extractPdfText(pdfParse, filePath);
 
       if (!content) {
         console.warn(`Skipping ${file}: no text content detected.`);
@@ -104,7 +125,7 @@ const main = async () => {
       `Successfully wrote ${documents.length} document(s) to ${OUTPUT_FILE}.`,
     );
   } catch (error) {
-    console.error("Failed to ingest PDFs:", error.message);
+    console.error("Failed to ingest PDFs:", error);
     process.exitCode = 1;
   }
 };

@@ -57,7 +57,7 @@ export const historicalEvents: HistoricalEvent[] = [
     month: 3,
     title: 'Hội nghị Đại biểu toàn quốc lần thứ nhất của Đảng',
     description: 'Đại hội họp tại Hà Nội, thảo luận và quyết định đường lối kháng chiến chống thực dân Pháp xâm lược.',
-    location: { name: 'Hà Nội', lat: 21.0285, lng: 105.8542 },
+    location: { name: 'Hà Nội', lat: 21.0270, lng: 105.8542 },
     significance: 'major'
   },
   {
@@ -66,7 +66,7 @@ export const historicalEvents: HistoricalEvent[] = [
     month: 12,
     title: 'Kháng chiến chống Pháp bắt đầu',
     description: 'Cuộc chiến tranh giữa Pháp và Việt Minh bắt đầu, đánh dấu cuộc đấu tranh lâu dài vì độc lập của Việt Nam.',
-    location: { name: 'Hà Nội', lat: 21.0285, lng: 105.8542 },
+    location: { name: 'Hà Nội', lat: 21.0270, lng: 105.8530 },
     significance: 'critical'
   },
   {
@@ -282,7 +282,7 @@ export const historicalEvents: HistoricalEvent[] = [
     month: 11,
     title: 'Ban Chấp Hành Trung ương ra Chỉ Thị Kháng Chiến',
     description: 'Ngày 25/11/1945, Chỉ Thị kháng chiến được đưa ra, phân tích sâu sắc sự biến đổi của tình hình thế giới và trong nước, xác định rõ "kẻ thù chính của nước ta lúc này là thực dân Pháp xâm lược phải tập trung ngọn lửa đấu tranh vào chúng. Đồng thời cũng đề ra nhiều biện pháp cụ thể giải quyết những khó khăn của cách mạng Việt Nam như thành lập Chính Phủ, động viên toàn dân kháng chiến, thực hiện ngoại giao "làm cho nước mình ít kẻ thù và nhiều bạn đồng minh hơn hết".',
-    location: { name: 'Hà Nội', lat: 21.0285, lng: 106.8297 },
+    location: { name: 'Hà Nội', lat: 21.0280, lng: 105.8530 },
     significance: 'critical'
   },
   {
