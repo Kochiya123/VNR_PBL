@@ -291,9 +291,10 @@ export const historicalEvents: HistoricalEvent[] = [
     month: 11,
     title: 'Bản Hiến Pháp đầu tiên của nước Việt Nam Dân Chủ Cộng Hòa được Quốc Hội thông qua',
     description: 'Ngày 9/11/1946, Chủ tịch nước Hồ Chí Minh ký thông qua Bản Hiến Pháp đầu tiên của nước Việt Nam Dân Chủ Cộng Hòa. ',
-    location: { name: 'Hà Nội', lat: 21.0085, lng: 106.8297 },
+    location: { name: 'Hà Nội', lat: 21.0280, lng: 105.8530 },
     significance: 'critical'
   },
+  
   
 ];
 
