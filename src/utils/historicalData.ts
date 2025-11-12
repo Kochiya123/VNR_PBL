@@ -338,23 +338,145 @@ export const historicalEvents: HistoricalEvent[] = [
     description: 'Ngày 19/12, Chủ tich Hồ Chí Minh ra Lời kêu gọi toàn quốc kháng chiến, khẳng định quyết tâm sắt đá của nhân dân Việt Nam trong công cuộc kháng chiến bảo vệ Tổ quốc.',
     location: { name: 'Hà Nội', lat: 21.0280, lng: 105.8530 },
     significance: 'critical'
-  }
+  },
   {
     id: '36',
     year: 1947,
     month: 2,
     title: 'Thành công đưa các lực lượng quân sự rút lui ra khỏi Hà Nội',
-    description: 'Nhờ sự chống trả anh dũng của dân quân địa phương, các lực lượng công an, cảnh sát. Đến ngày 17/2/1974 về cơ bản đã hoàn tất việc rút lui các lực lượng chủ lực lên chiến khu Việt Bắc, tạo thế phát triển kháng chiến lâu dài.'
-    location: { name: 'Việt Bắc', lat: , lng: },
+    description: 'Nhờ sự chống trả anh dũng của dân quân địa phương, các lực lượng công an, cảnh sát. Đến ngày 17/2/1974 về cơ bản đã hoàn tất việc rút lui các lực lượng chủ lực lên chiến khu Việt Bắc, tạo thế phát triển kháng chiến lâu dài.',
+    location: { name: 'Việt Bắc', lat: 22.0, lng: 105.5 },
     significance: 'critical'
-  },
-  
+  }
 ];
 
-export const getEventsByYear = (year: number): HistoricalEvent[] => {
-  return historicalEvents.filter(event => event.year === year);
+// Helper function to calculate distance between two coordinates (in degrees)
+const getDistance = (lat1: number, lng1: number, lat2: number, lng2: number): number => {
+  const R = 6371; // Earth's radius in km
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLng = (lng2 - lng1) * Math.PI / 180;
+  const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+    Math.sin(dLng / 2) * Math.sin(dLng / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
 };
 
+// Check if two coordinates are too close (within ~500 meters)
+const areCoordinatesClose = (lat1: number, lng1: number, lat2: number, lng2: number, thresholdKm: number = 0.5): boolean => {
+  return getDistance(lat1, lng1, lat2, lng2) < thresholdKm;
+};
+
+// Generate spiral offset pattern for spreading markers
+const getSpiralOffset = (index: number, baseOffset: number = 0.005): { lat: number; lng: number } => {
+  const angle = index * 0.5; // Golden angle approximation
+  const radius = baseOffset * Math.sqrt(index);
+  return {
+    lat: radius * Math.cos(angle),
+    lng: radius * Math.sin(angle)
+  };
+};
+
+// Spread out overlapping coordinates while keeping them near the original location
+const spreadOverlappingCoordinates = (events: HistoricalEvent[]): HistoricalEvent[] => {
+  const processedEvents: HistoricalEvent[] = [];
+  const locationGroups = new Map<string, HistoricalEvent[]>();
+
+  // Group events by location name
+  events.forEach(event => {
+    const key = event.location.name.toLowerCase().trim();
+    if (!locationGroups.has(key)) {
+      locationGroups.set(key, []);
+    }
+    locationGroups.get(key)!.push(event);
+  });
+
+  // Process each location group
+  locationGroups.forEach((groupEvents, locationName) => {
+    if (groupEvents.length === 1) {
+      // No overlap, keep original coordinates
+      processedEvents.push(groupEvents[0]);
+      return;
+    }
+
+    // Check for actual coordinate overlaps (not just same location name)
+    const coordinateGroups = new Map<string, HistoricalEvent[]>();
+    
+    groupEvents.forEach(event => {
+      // Find if this event's coordinates are close to any existing group
+      let foundGroup = false;
+      for (const [coordKey, coordGroup] of coordinateGroups.entries()) {
+        const [baseLat, baseLng] = coordKey.split(',').map(Number);
+        if (areCoordinatesClose(event.location.lat, event.location.lng, baseLat, baseLng)) {
+          coordGroup.push(event);
+          foundGroup = true;
+          break;
+        }
+      }
+      
+      if (!foundGroup) {
+        const newKey = `${event.location.lat},${event.location.lng}`;
+        coordinateGroups.set(newKey, [event]);
+      }
+    });
+
+    // Spread out overlapping coordinates
+    coordinateGroups.forEach((coordGroup, coordKey) => {
+      if (coordGroup.length === 1) {
+        processedEvents.push(coordGroup[0]);
+      } else {
+        // Multiple events at same coordinates - spread them out
+        const [baseLat, baseLng] = coordKey.split(',').map(Number);
+        coordGroup.forEach((event, index) => {
+          const offset = getSpiralOffset(index, 0.003); // ~300m offset per ring
+          processedEvents.push({
+            ...event,
+            location: {
+              ...event.location,
+              lat: baseLat + offset.lat,
+              lng: baseLng + offset.lng
+            }
+          });
+        });
+      }
+    });
+  });
+
+  return processedEvents;
+};
+
+// Get events grouped by year
+export const getEventsGroupedByYear = (): Map<number, HistoricalEvent[]> => {
+  const grouped = new Map<number, HistoricalEvent[]>();
+  
+  historicalEvents.forEach(event => {
+    if (!grouped.has(event.year)) {
+      grouped.set(event.year, []);
+    }
+    grouped.get(event.year)!.push(event);
+  });
+
+  // Sort events within each year by month
+  grouped.forEach((events, year) => {
+    events.sort((a, b) => a.month - b.month);
+  });
+
+  return grouped;
+};
+
+// Get events by year with spread coordinates
+export const getEventsByYear = (year: number): HistoricalEvent[] => {
+  const events = historicalEvents.filter(event => event.year === year);
+  return spreadOverlappingCoordinates(events);
+};
+
+// Get events by year range with spread coordinates
 export const getEventsByYearRange = (startYear: number, endYear: number): HistoricalEvent[] => {
-  return historicalEvents.filter(event => event.year >= startYear && event.year <= endYear);
+  const events = historicalEvents.filter(event => event.year >= startYear && event.year <= endYear);
+  return spreadOverlappingCoordinates(events);
+};
+
+// Get all events with spread coordinates
+export const getAllEventsWithSpreadCoordinates = (): HistoricalEvent[] => {
+  return spreadOverlappingCoordinates(historicalEvents);
 };
