@@ -294,7 +294,25 @@ export const historicalEvents: HistoricalEvent[] = [
     location: { name: 'Hà Nội', lat: 21.0280, lng: 105.8530 },
     significance: 'critical'
   },
-  
+  {
+    id: '31',
+    year: 1946,
+    month: 5,
+    title: 'Phái đoàn chính phủ Việt Nam thăm chính thức Pháp',
+    description: 'Ngày 31/5/1946, Phái đoàn chính phủ Việt Nam thăm chính thức Pháp để thực hiện ngoại giao và thương lượng với Pháp. Chuyến thăm kéo dài 4 tháng đã thu được những thành công nhất định, điển hình như bảm tạm ước Mácxây',
+    location: { name: 'Pháp', lat: 48.8566, lng: 2.3522 },
+    significance: 'critical'
+  },
+  {
+    id: '32',
+    year: 1946,
+    month: 7,
+    title: 'Triệt phá âm mưu của bọn Đại Việt, Quốc Dân Đảng',
+    description: 'Rạng sáng ngày 12/7/1946, lực lượng công an đã đột nhâp, triệt phá thành công âm mưu lật đổ chính quyền của bọn Đại Việt, Quốc Dân Đảng ở số nhà 132 Duvigneau, kết thúc Vụ án ở số 7 phố Ôn Như Hầu.',
+    location: { name: 'phố Bùi Thị Xuân, Hà Nội', lat: 21.0280, lng: 105.8480 },
+    significance: 'critical'
+  },
+
   
 ];
 
