@@ -281,10 +281,19 @@ export const historicalEvents: HistoricalEvent[] = [
     year: 1945,
     month: 11,
     title: 'Ban Chấp Hành Trung ương ra Chỉ Thị Kháng Chiến',
-    description: 'Ngày 25/11/1945, Chỉ Thị kháng chiến được đưa ra, phân tích sâu sắc sự biến đổi của tình hình thế giới và trong nước, xác định rõ "kẻ thù chính của nước ta lúc này là thực dân Pháp xâm lược phải tập trung ngọn lửa đấu tranh vào chúng"',
-    location: { name: 'Hà Nội', lat: 21.1285, lng: 105.8542 },
+    description: 'Ngày 25/11/1945, Chỉ Thị kháng chiến được đưa ra, phân tích sâu sắc sự biến đổi của tình hình thế giới và trong nước, xác định rõ "kẻ thù chính của nước ta lúc này là thực dân Pháp xâm lược phải tập trung ngọn lửa đấu tranh vào chúng. Đồng thời cũng đề ra nhiều biện pháp cụ thể giải quyết những khó khăn của cách mạng Việt Nam như thành lập Chính Phủ, động viên toàn dân kháng chiến, thực hiện ngoại giao "làm cho nước mình ít kẻ thù và nhiều bạn đồng minh hơn hết".',
+    location: { name: 'Hà Nội', lat: 21.0285, lng: 106.8297 },
     significance: 'critical'
-  }
+  },
+  {
+    id: '30',
+    year: 1946,
+    month: 11,
+    title: 'Bản Hiến Pháp đầu tiên của nước Việt Nam Dân Chủ Cộng Hòa được Quốc Hội thông qua',
+    description: 'Ngày 9/11/1946, Chủ tịch nước Hồ Chí Minh ký thông qua Bản Hiến Pháp đầu tiên của nước Việt Nam Dân Chủ Cộng Hòa. ',
+    location: { name: 'Hà Nội', lat: 21.0085, lng: 106.8297 },
+    significance: 'critical'
+  },
   
 ];
 

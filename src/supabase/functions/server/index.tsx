@@ -39,9 +39,6 @@ app.post("/make-server-4e12d5d5/chat", async (c) => {
       return c.json({ error: 'Message or image is required' }, 400);
     }
 
-    // Get relevant historical context
-    const context = getRelevantContext(message || '');
-
     // Check if OpenAI API key is available (works in Deno and Node)
     const openaiApiKey =
       (globalThis as any).Deno?.env?.get?.('OPENAI_API_KEY') ??
@@ -54,6 +51,9 @@ app.post("/make-server-4e12d5d5/chat", async (c) => {
         response: 'I apologize, but the AI service is not currently configured. To enable me to answer your questions, please provide an OpenAI API key through the environment settings.'
       }, 500);
     }
+
+    // Get relevant historical context
+    const context = await getRelevantContext(message || '', openaiApiKey);
 
     // Prepare messages for OpenAI
     const messages: any[] = [
