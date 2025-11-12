@@ -163,9 +163,11 @@ export const TimelineSlider: React.FC<TimelineSliderProps> = ({
       </div>
 
       {/* Instructions */}
-      <div className="relative mt-12"><p className="text-xs text-gray-500 text-center">
-        Kéo thanh trượt hoặc dùng nút mũi tên để khám phá các sự kiện từ 1945 đến 1975
-      </p></div>q
+      <div className="relative mt-12">
+        <p className="text-xs text-gray-500 text-center">
+          Kéo thanh trượt hoặc dùng nút mũi tên để khám phá các sự kiện từ 1945 đến 1975
+        </p>
+      </div>
     </div>
   );
 };
