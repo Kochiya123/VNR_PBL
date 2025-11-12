@@ -410,8 +410,25 @@ export const historicalEvents: HistoricalEvent[] = [
     description: 'Quân ta tổ chức tiến công lớn vào khu vực đóng quân của địch trên cầu Kè, tiêu diệt và loại vỏ 17 đồn bốt, tiêu diệt 500 địch, bắt sống 200, bắn chìm 2 tàu, phá hủy 2 xe lội nước, 4 xe quân sự, thu trên 300 súng.',
     location: { name: 'Cầu Kè, Trà Vinh', lat: 9.872252, lng: 106.061655 },
     significance: 'critical'
-  }
-  
+  },
+  {
+    id: '44',
+    year: 1949,
+    month: 7,
+    title: 'Quốc Gia Việt Nam ra đời',
+    description: 'Sau khi được người Pháp đưa về Sài Gòn vào ngày 13/6/1949, Quốc Trưởng Bảo Đại đã chính thức tuyên bố thành lập "Quốc gia Việt Nam" vào ngày 1/7/1949.',
+    location: { name: 'Sài Gòn', lat: 10.8231, lng: 106.6297 },
+    significance: 'critical'
+  },
+  {
+    id: '45',
+    year: 1950,
+    month: 6,
+    title: 'Chiến dịch biên giới Thu - Đông 1950',
+    description: 'Chiến dịch biên giới Thu - Đông được Thường vụ Trung ương Đảng tiến hành nhằm tiêu diệt một bộ phận sinh lực địch, đồng thời giữ an toàn cho các tuyến đường dọc biên giới Việt-Trung nhằm mục đích hậu cần và tiếp tế từ nước bạn.',
+    location: { name: 'thị xã Cao Bằng - Đình Lập', lat: 22.6667, lng: 106.2500 },
+    significance: 'critical'
+  },
 ];
 
 // Helper function to calculate distance between two coordinates (in degrees)

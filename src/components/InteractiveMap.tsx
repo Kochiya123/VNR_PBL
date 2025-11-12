@@ -1,6 +1,6 @@
 import React, { useState, useEffect,useRef } from 'react';
 import { HistoricalEvent } from '../utils/historicalData';
-import { MapPin, Info } from 'lucide-react';
+import { MapPin, Info, Navigation, X } from 'lucide-react';
 import * as maptilersdk from '@maptiler/sdk';
 import "@maptiler/sdk/dist/maptiler-sdk.css";
 
@@ -10,9 +10,24 @@ interface InteractiveMapProps {
   selectedYear: number;
 }
 
+interface RouteInput {
+  startLat: string;
+  startLng: string;
+  endLat: string;
+  endLng: string;
+}
+
 export const InteractiveMap: React.FC<InteractiveMapProps> = ({ events, selectedYear }) => {
   const [selectedEvent, setSelectedEvent] = useState<HistoricalEvent | null>(null);
   const [hoveredEvent, setHoveredEvent] = useState<string | null>(null);
+  const [showRouteInput, setShowRouteInput] = useState(false);
+  const [routeInput, setRouteInput] = useState<RouteInput>({
+    startLat: '',
+    startLng: '',
+    endLat: '',
+    endLng: ''
+  });
+  const [routeLine, setRouteLine] = useState<GeoJSON.LineString | null>(null);
 
   // Convert lat/lng to map position (Vietnam roughly spans 8-23°N, 102-110°E)
   const latToY = (lat: number) => {
@@ -55,11 +70,71 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({ events, selected
   const mapContainer = useRef<HTMLDivElement | null>(null);
   const map = useRef<maptilersdk.Map | null>(null);
   const markersRef = useRef<maptilersdk.Marker[]>([]);
+  const routeSourceRef = useRef<string | null>(null);
   const vietnamCenter = { lng: 105.8, lat: 16.2 }; // central Vietnam
   const zoom = 6; // country-level
   const pitch = 60;
   const bearing = 20;
   maptilersdk.config.apiKey = 'jcmVafcUwfzyvMikku9V';
+
+  // Generate geodesic line between two points with intermediate points for terrain following
+  const generateRouteLine = (startLat: number, startLng: number, endLat: number, endLng: number): GeoJSON.LineString => {
+    const numPoints = 100; // More points = smoother terrain following
+    const coordinates: [number, number][] = [];
+    
+    for (let i = 0; i <= numPoints; i++) {
+      const t = i / numPoints;
+      // Spherical interpolation (great circle)
+      const lat1 = startLat * Math.PI / 180;
+      const lng1 = startLng * Math.PI / 180;
+      const lat2 = endLat * Math.PI / 180;
+      const lng2 = endLng * Math.PI / 180;
+      
+      const d = Math.acos(Math.sin(lat1) * Math.sin(lat2) + 
+                        Math.cos(lat1) * Math.cos(lat2) * Math.cos(lng2 - lng1));
+      
+      if (d === 0) {
+        coordinates.push([startLng, startLat]);
+        continue;
+      }
+      
+      const a = Math.sin((1 - t) * d) / Math.sin(d);
+      const b = Math.sin(t * d) / Math.sin(d);
+      const x = a * Math.cos(lat1) * Math.cos(lng1) + b * Math.cos(lat2) * Math.cos(lng2);
+      const y = a * Math.cos(lat1) * Math.sin(lng1) + b * Math.cos(lat2) * Math.sin(lng2);
+      const z = a * Math.sin(lat1) + b * Math.sin(lat2);
+      
+      const lat = Math.atan2(z, Math.sqrt(x * x + y * y)) * 180 / Math.PI;
+      const lng = Math.atan2(y, x) * 180 / Math.PI;
+      
+      coordinates.push([lng, lat]);
+    }
+    
+    return {
+      type: 'LineString',
+      coordinates
+    };
+  };
+
+  const drawRoute = () => {
+    const startLat = parseFloat(routeInput.startLat);
+    const startLng = parseFloat(routeInput.startLng);
+    const endLat = parseFloat(routeInput.endLat);
+    const endLng = parseFloat(routeInput.endLng);
+
+    if (isNaN(startLat) || isNaN(startLng) || isNaN(endLat) || isNaN(endLng)) {
+      alert('Please enter valid coordinates for both start and end points.');
+      return;
+    }
+
+    const line = generateRouteLine(startLat, startLng, endLat, endLng);
+    setRouteLine(line);
+  };
+
+  const clearRoute = () => {
+    setRouteLine(null);
+    setRouteInput({ startLat: '', startLng: '', endLat: '', endLng: '' });
+  };
 
   useEffect(() => {
   if (map.current) return; // stops map from intializing more than once
@@ -104,6 +179,60 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({ events, selected
   });
 
 }, [vietnamCenter.lng, vietnamCenter.lat, zoom, pitch, bearing]);
+
+  // Draw route line on map
+  useEffect(() => {
+    if (!map.current || !routeLine) return;
+
+    const sourceId = 'route-line';
+    const layerId = 'route-line-layer';
+
+    // Remove existing route if any
+    if (map.current.getLayer(layerId)) {
+      map.current.removeLayer(layerId);
+    }
+    if (map.current.getSource(sourceId)) {
+      map.current.removeSource(sourceId);
+    }
+
+    // Add route as GeoJSON source
+    map.current.addSource(sourceId, {
+      type: 'geojson',
+      data: {
+        type: 'Feature',
+        geometry: routeLine
+      } as GeoJSON.Feature
+    });
+
+    // Add route layer with red line
+    map.current.addLayer({
+      id: layerId,
+      type: 'line',
+      source: sourceId,
+      layout: {
+        'line-join': 'round',
+        'line-cap': 'round'
+      },
+      paint: {
+        'line-color': '#dc2626', // red-600
+        'line-width': 4,
+        'line-opacity': 0.8
+      }
+    });
+
+    routeSourceRef.current = sourceId;
+
+    return () => {
+      if (map.current) {
+        if (map.current.getLayer(layerId)) {
+          map.current.removeLayer(layerId);
+        }
+        if (map.current.getSource(sourceId)) {
+          map.current.removeSource(sourceId);
+        }
+      }
+    };
+  }, [routeLine]);
 
   // Sync timeline with markers on map
   useEffect(() => {
@@ -256,6 +385,106 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({ events, selected
       {/* Map Container with 3D perspective */}
       
       <div ref={mapContainer} className="w-full h-[600px] md:h-[700px]" />
+      
+      {/* Route Input Toggle Button */}
+      <button
+        onClick={() => setShowRouteInput(!showRouteInput)}
+        className="absolute top-4 left-4 z-30 bg-white hover:bg-gray-50 text-gray-700 px-4 py-2 rounded-lg shadow-lg border border-gray-200 flex items-center gap-2 transition-colors"
+        title="Draw route line"
+      >
+        <Navigation className="w-5 h-5" />
+        <span className="hidden md:inline">Draw Route</span>
+      </button>
+
+      {/* Route Input Panel */}
+      {showRouteInput && (
+        <div className="absolute top-4 left-4 z-30 w-80 bg-white rounded-lg shadow-2xl border border-gray-200 overflow-hidden">
+          <div className="bg-gradient-to-r from-red-700 to-red-600 text-white p-4">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-semibold flex items-center gap-2">
+                <Navigation className="w-5 h-5" />
+                Draw Route Line
+              </h3>
+              <button
+                onClick={() => {
+                  setShowRouteInput(false);
+                  clearRoute();
+                }}
+                className="text-white hover:text-gray-200 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+          <div className="p-4 space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Start Location
+              </label>
+              <div className="grid grid-cols-2 gap-2">
+                <input
+                  type="number"
+                  step="any"
+                  placeholder="Latitude"
+                  value={routeInput.startLat}
+                  onChange={(e) => setRouteInput({ ...routeInput, startLat: e.target.value })}
+                  className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-600 text-sm"
+                />
+                <input
+                  type="number"
+                  step="any"
+                  placeholder="Longitude"
+                  value={routeInput.startLng}
+                  onChange={(e) => setRouteInput({ ...routeInput, startLng: e.target.value })}
+                  className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-600 text-sm"
+                />
+              </div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                End Location
+              </label>
+              <div className="grid grid-cols-2 gap-2">
+                <input
+                  type="number"
+                  step="any"
+                  placeholder="Latitude"
+                  value={routeInput.endLat}
+                  onChange={(e) => setRouteInput({ ...routeInput, endLat: e.target.value })}
+                  className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-600 text-sm"
+                />
+                <input
+                  type="number"
+                  step="any"
+                  placeholder="Longitude"
+                  value={routeInput.endLng}
+                  onChange={(e) => setRouteInput({ ...routeInput, endLng: e.target.value })}
+                  className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-600 text-sm"
+                />
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={drawRoute}
+                className="flex-1 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md transition-colors text-sm font-medium"
+              >
+                Draw Line
+              </button>
+              {routeLine && (
+                <button
+                  onClick={clearRoute}
+                  className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-md transition-colors text-sm font-medium"
+                >
+                  Clear
+                </button>
+              )}
+            </div>
+            <p className="text-xs text-gray-500">
+              Enter coordinates to draw a red line following the terrain between two points.
+            </p>
+          </div>
+        </div>
+      )}
       
       {/* Event Details Panel */}
       {selectedEvent && (
