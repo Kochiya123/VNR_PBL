@@ -312,7 +312,42 @@ export const historicalEvents: HistoricalEvent[] = [
     location: { name: 'phố Bùi Thị Xuân, Hà Nội', lat: 21.0280, lng: 105.8480 },
     significance: 'critical'
   },
-
+  {
+    id: '33',
+    year: 1946,
+    month: 11,
+    title: 'Thực dân Pháp đánh chiếm Hải Phòng, Lạng Sơn.',
+    description: 'Thực dân Pháp đánh chiếm Hải Phòng, Lạng Sơn, đơn phương hủy bỏ bản Tạm ước đã ký trước đó.',
+    location: { name: 'Hải Phòng', lat: 20.8667, lng: 106.6833 },
+    significance: 'critical'
+  },
+  {
+    id: '34',
+    year: 1946,
+    month: 12,
+    title: 'Pháp gửi tối hậu thư đòi phía Việt Nam phải giải giáp',
+    description: 'Ngày 18/12, đại diện Pháp ở Hà Nội tuyên bố ngừng mọi liên lạc và gửi tối hậu thư yêu cầu chính phủ Việt Nam phải giải giáp, giao lại quyền kiểm soát thành phố.',
+    location: { name: 'Hà Nội', lat: 21.0280, lng: 105.8530 },
+    significance: 'critical'
+  },
+  {
+    id: '35',
+    year: 1946,
+    month: 12,
+    title: 'Lời kêu gọi toàn quốc kháng chiến.',
+    description: 'Ngày 19/12, Chủ tich Hồ Chí Minh ra Lời kêu gọi toàn quốc kháng chiến, khẳng định quyết tâm sắt đá của nhân dân Việt Nam trong công cuộc kháng chiến bảo vệ Tổ quốc.',
+    location: { name: 'Hà Nội', lat: 21.0280, lng: 105.8530 },
+    significance: 'critical'
+  }
+  {
+    id: '36',
+    year: 1947,
+    month: 2,
+    title: 'Thành công đưa các lực lượng quân sự rút lui ra khỏi Hà Nội',
+    description: 'Nhờ sự chống trả anh dũng của dân quân địa phương, các lực lượng công an, cảnh sát. Đến ngày 17/2/1974 về cơ bản đã hoàn tất việc rút lui các lực lượng chủ lực lên chiến khu Việt Bắc, tạo thế phát triển kháng chiến lâu dài.'
+    location: { name: 'Việt Bắc', lat: , lng: },
+    significance: 'critical'
+  },
   
 ];
 
