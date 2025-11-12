@@ -347,7 +347,71 @@ export const historicalEvents: HistoricalEvent[] = [
     description: 'Nhờ sự chống trả anh dũng của dân quân địa phương, các lực lượng công an, cảnh sát. Đến ngày 17/2/1974 về cơ bản đã hoàn tất việc rút lui các lực lượng chủ lực lên chiến khu Việt Bắc, tạo thế phát triển kháng chiến lâu dài.',
     location: { name: 'Việt Bắc', lat: 22.0, lng: 105.5 },
     significance: 'critical'
+  },
+  {
+    id: '37',
+    year: 1948,
+    month: 6,
+    title: 'Lời kêu gọi thi đua ái quốc',
+    description: 'Ngày 11/6/1948, Chủ tịch Hồ Chí Minh ra lời kêu gọi thi đua ái quốc, kêu gọi mọi người đóng góp sức mình vào công cuộc xây dựng đất nước.',
+    location: { name: 'Hà Nội', lat: 21.0280, lng: 105.8530 },
+    significance: 'critical'
+  },
+  {
+    id: '38',
+    year: 1949,
+    month: 11,
+    title: 'Sắc lệnh về nghĩa vụ quân sự',
+    description: 'Chủ tịch hồ Chí Minh ký sắc lệnh về Nghĩa vụ quân sự, từ đó các lực lượng quân sự của ta phát triển nhanh chóng cả về số lượng lẫn chất lượng',
+    location: { name: 'Hà Nội', lat: 21.0280, lng: 105.8530 },
+    significance: 'critical'
+  },
+  {
+    id: '39',
+    year: 1950,
+    month: 2,
+    title: 'Đảng chủ trương tổng động viên',
+    description: 'Chủ tịch Hồ Chí Minh và Đảng ra sắc lệnh Tổng đọng viên, huy động mọi nguồn lực tập trung cho cuộc kháng chiên.',
+    location: { name: 'Hà Nội', lat: 21.0280, lng: 105.8530 },
+    significance: 'critical'
+  },
+  {
+    id: '40',
+    year: 1948,
+    month: 3,
+    title: 'Trận thắng La Ngà',
+    description: 'Quân ta đã hạ gục 59 xe các loại, tiêu diệt 150 tên và bắt sống 300 tên địch. Trận đánh đã ra sự hoang mang trong nôi bộ nước Pháp.',
+    location: { name: 'La Ngà, Quảng Trị', lat: 11.166337, lng: 107.234741 },
+    significance: 'critical'
+  },
+  {
+    id: '41',
+    year: 1948,
+    month: 4,
+    title: 'Chiến thắng Tầm Vu',
+    description: 'Là trận đánh phục kích do bộ đội chủ lực Khu 4 thực hiện. Ta tiêu diệt 100 sĩ quan Pháp, phá hủy 14 xe vận tải quân sự đồng thời lần đầu tiên thu giữ khẩu pháo 105mm.',
+    location: { name: 'Tầm Vu, Quảng Trị', lat: 10.44361, lng: 106.469215 },
+    significance: 'critical'
+  },
+  {
+    id: '42',
+    year: 1950,
+    month: 1,
+    title: 'Cuộc biểu tình ở Sài Gòn Chở lớn của học sinh sinh viên.',
+    description: 'Ngày 9/1/1950, hưởng ứng lời kêu gọi của chủ tich Hồ Chí Minh, học sinh sinh viên đã tổ chức nhiều phong trào biểu tình chống lại chủ nghĩa thực dân đế quốc Pháp và sự xâm lược và can thiệp của Mỹ vào miền Nam Việt Nam.',
+    location: { name: 'Sài Gòn', lat: 10.8231, lng: 106.6297 },
+    significance: 'critical'
+  },
+  {
+    id: '43',
+    year: 1949,
+    month: 12,
+    title: 'Chiến dịch Cầu Kè - Trà Vinh',
+    description: 'Quân ta tổ chức tiến công lớn vào khu vực đóng quân của địch trên cầu Kè, tiêu diệt và loại vỏ 17 đồn bốt, tiêu diệt 500 địch, bắt sống 200, bắn chìm 2 tàu, phá hủy 2 xe lội nước, 4 xe quân sự, thu trên 300 súng.',
+    location: { name: 'Cầu Kè, Trà Vinh', lat: 9.872252, lng: 106.061655 },
+    significance: 'critical'
   }
+  
 ];
 
 // Helper function to calculate distance between two coordinates (in degrees)
