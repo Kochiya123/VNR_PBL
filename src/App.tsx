@@ -37,7 +37,7 @@ export default function App() {
                 <span className="text-2xl">⭐</span>
               </div>
               <div>
-                <h1 className="text-2xl">Lịch Sử Việt Nam 1945-1975</h1>
+                <h1 className="text-2xl">Dấu Ấn Lịch Sử 1945-1975</h1>
                 <p className="text-sm opacity-90">Con Đường Giành Độc Lập và Thống Nhất Đất Nước</p>
               </div>
             </div>
