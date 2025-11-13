@@ -91,10 +91,25 @@ export const ChatBot: React.FC = () => {
       if (!response.ok) {
         const errorText = await response.text();
         console.error('Chat API error:', errorText);
-        throw new Error('Failed to get response from chatbot');
+        let errorMessage = 'Không thể kết nối với chatbot. ';
+        try {
+          const errorData = JSON.parse(errorText);
+          if (errorData.error) {
+            errorMessage += errorData.error;
+          } else if (errorData.response) {
+            errorMessage = errorData.response;
+          }
+        } catch {
+          errorMessage += 'Vui lòng thử lại sau.';
+        }
+        throw new Error(errorMessage);
       }
 
       const data = await response.json();
+
+      if (!data.response) {
+        throw new Error('Chatbot không trả về phản hồi hợp lệ.');
+      }
 
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
@@ -109,7 +124,7 @@ export const ChatBot: React.FC = () => {
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: 'I apologize, but I encountered an error. Please try again.',
+        content: error instanceof Error ? error.message : 'Xin lỗi, đã xảy ra lỗi. Vui lòng thử lại.',
         timestamp: new Date()
       };
       setMessages(prev => [...prev, errorMessage]);

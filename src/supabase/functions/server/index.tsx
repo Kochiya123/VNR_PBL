@@ -52,8 +52,15 @@ app.post("/make-server-4e12d5d5/chat", async (c) => {
       }, 500);
     }
 
-    // Get relevant historical context
-    const context = await getRelevantContext(message || '', openaiApiKey);
+    // Get relevant historical context with error handling
+    let context = '';
+    try {
+      context = await getRelevantContext(message || '', openaiApiKey);
+      console.log('Context retrieved, length:', context.length);
+    } catch (contextError) {
+      console.error('Error getting context, using fallback:', contextError);
+      context = 'Không thể tải tài liệu tham chiếu. Sử dụng kiến thức chung về lịch sử Việt Nam 1945-1975.';
+    }
 
     // Prepare messages for OpenAI
     const messages: any[] = [
@@ -61,11 +68,7 @@ app.post("/make-server-4e12d5d5/chat", async (c) => {
         role: 'system',
         content: `Bạn là trợ lý lịch sử Việt Nam am hiểu về giai đoạn 1945-1975, đặc biệt tập trung vào Đảng Cộng sản Việt Nam.
 
-Sử dụng bối cảnh lịch sử này để trả lời câu hỏi:
-
-${context}
-
-Hãy cung cấp câu trả lời chính xác, nhiều thông tin và cân bằng. Nếu không chắc chắn về chi tiết cụ thể, hãy thừa nhận điều đó. Ưu tiên trả lời bằng tiếng Việt, nhưng có thể sử dụng tiếng Anh nếu người dùng hỏi bằng tiếng Anh.`
+${context ? `Sử dụng bối cảnh lịch sử này để trả lời câu hỏi:\n\n${context}\n\n` : ''}Hãy cung cấp câu trả lời chính xác, nhiều thông tin và cân bằng. Nếu không chắc chắn về chi tiết cụ thể, hãy thừa nhận điều đó. Ưu tiên trả lời bằng tiếng Việt, nhưng có thể sử dụng tiếng Anh nếu người dùng hỏi bằng tiếng Anh.`
       }
     ];
 

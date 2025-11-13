@@ -429,6 +429,70 @@ export const historicalEvents: HistoricalEvent[] = [
     location: { name: 'thị xã Cao Bằng - Đình Lập', lat: 22.6667, lng: 106.2500 },
     significance: 'critical'
   },
+  {
+    id: '46',
+    year: 1952,
+    month: 4,
+    title: 'Hội Nghị lần thứ 3 ',
+    description: 'Ban Chấp hành Trung ương Đảng đã đề ra những quyết sách lớn trong công tác "chỉnh Đảng, chỉnh quân", phục vụ cho cuộc kháng chiến cứu nước.',
+    location: { name: 'Hà Nội', lat: 21.0280, lng: 105.8530 },
+    significance: 'critical'
+  },
+  {
+    id: '47',
+    year: 1953,
+    month: 11,
+    title: 'Hội nghị toàn quốc lần thứ nhất và hội nghị trung ương Đảng lần thứ 5',
+    description: 'Thông qua cương lĩnh ruộng đất, thực hiện "phát động quần chúng triệt để giảm tô, thực hiện giảm tức và tiến hành cải cách ruộng đất", nâng cao quyền lợi kinh tế của người nông dân.',
+    location: { name: 'Hà Nội', lat: 21.0280, lng: 105.8530 },
+    significance: 'critical'
+  },
+  {
+    id: '48',
+    year: 1953,
+    month: 12,
+    title: 'Luật cải cách ruộng đất được ban hành.',
+    description: 'Ngày 19/12/1953, chủ tịch Hồ Chí Minh đã ký ban hành luật cải cách ruộng đất, chia hành nghìn hecta ruộng cày, trâu bò và các loại nông cụ cho người nông dân nghèo.',
+    location: { name: 'Hà Nội', lat: 21.0280, lng: 105.8530 },
+    significance: 'critical'
+  },
+  {
+    id: '49',
+    year: 1953,
+    month: 5,
+    title: 'Đại tướng H. Navarre nhậm chức Tổng chỉ huy quân đội Pháp ở Đông Dương.',
+    description: 'Khi nhậm chức mới, Navarre đã phát biểu rằng "Bây giờ chúng ta có thể nhìn thấy rõ chiến thắng (ở Việt Nam) giống như nhìn thấy ánh sáng cuối đường hầm"',
+    location: { name: 'Hà Nội', lat: 21.0280, lng: 105.8530 },
+    significance: 'critical'
+  },
+  {
+    id : '50',
+    year: 1954,
+    month: 2,
+    title: 'Xây dựng Điện Biên Phủ',
+    description: 'Song song với việc thực hiện kế hoạch Nava, căn cứ Điện Biên Phủ đã được người Pháp xây dựng, gia cố trở thành tập đoàn cứ điểm mạnh nhất toàn Đông Dương. Tướng Navarre hi vọng sẽ giành được một chiến thắng quân sự lớn trong 18 tháng và kết thúc chiến tranh trong danh dự',
+    location: { name: 'Điện Biên Phủ', lat: 21.3833, lng: 103.0167 },
+    significance: 'critical'
+  },
+  {
+    id: '51',
+    year: 1953,
+    month: 9,
+    title: 'Chiến lược Đông Xuân 1953-1954',
+    description: 'Bộ Chính Trị họp bàn, thông qua chủ trương tác chiến cho chiến lược Đong Xuân 1953-1954, nhằm tiêu diệt sinh lực đich, giữ thế chủ động cho lực lượng của ta.',
+    location: { name: 'Hà Nội', lat: 21.0280, lng: 105.8530 },
+    significance: 'critical'
+  },
+  {
+    id: '52',
+    year: 1953,
+    month: 6,
+    title: 'Khai màn chiến dịch Điện Biên Phủ',
+    description: 'Ngày 6/12/1953, Bộ Chính Trị đã quyết định khai màn chiến dịch Điện Biên Phủ và giao quyền chi huy cho tướng Võ Nguyên Giáp, đồng thời ở các địa điểm khác cũng diễn ra hàng loạt các cuộc tiến công của ta trên các hướng Lai Châu, Trung Lào, Tây Nguyên,..',
+    location: { name: 'Điện Biên Phủ', lat: 21.3833, lng: 103.0167 },
+    significance: 'critical'
+  },
+  
 ];
 
 // Helper function to calculate distance between two coordinates (in degrees)

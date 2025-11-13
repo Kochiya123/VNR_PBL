@@ -1,3 +1,4 @@
+// Import reference documents
 import { referenceDocuments } from "../../../reference/referenceDocuments.ts";
 
 interface DocumentChunk {
@@ -140,34 +141,64 @@ export const getRelevantContext = async (
   query: string,
   apiKey: string,
 ): Promise<string> => {
-  const chunks = await ensureChunkEmbeddings(apiKey);
+  try {
+    console.log('Getting relevant context for query:', query?.substring(0, 50));
+    console.log('Reference documents count:', referenceDocuments?.length || 0);
 
-  if (!chunks.length) {
-    return "Không tìm thấy tài liệu tham chiếu. Vui lòng thêm nội dung vào referenceDocuments.";
-  }
+    if (!referenceDocuments || referenceDocuments.length === 0) {
+      console.warn('No reference documents available');
+      return "Không tìm thấy tài liệu tham chiếu. Vui lòng thêm nội dung vào referenceDocuments.";
+    }
 
-  const [queryEmbedding] = await embedTexts([query || "lịch sử Việt Nam"], apiKey);
+    const chunks = await ensureChunkEmbeddings(apiKey);
+    console.log('Chunks generated:', chunks.length);
 
-  const rankedChunks = chunks
-    .map((chunk) => ({
-      chunk,
-      score: cosineSimilarity(queryEmbedding, chunk.embedding),
-    }))
-    .sort((a, b) => b.score - a.score)
-    .slice(0, MAX_CHUNKS_RETURNED)
-    .filter((entry) => entry.score > 0);
+    if (!chunks.length) {
+      return "Không tìm thấy tài liệu tham chiếu. Vui lòng thêm nội dung vào referenceDocuments.";
+    }
 
-  if (!rankedChunks.length) {
-    return chunks
+    const queryText = query || "lịch sử Việt Nam";
+    console.log('Generating query embedding...');
+    const queryEmbeddings = await embedTexts([queryText], apiKey);
+    
+    if (!queryEmbeddings || queryEmbeddings.length === 0) {
+      console.error('Failed to generate query embedding');
+      // Fallback: return first few chunks
+      return chunks
+        .slice(0, MAX_CHUNKS_RETURNED)
+        .map(({ content, title }) => `### ${title}\n${content}`)
+        .join("\n\n---\n\n");
+    }
+
+    const [queryEmbedding] = queryEmbeddings;
+
+    const rankedChunks = chunks
+      .map((chunk) => ({
+        chunk,
+        score: cosineSimilarity(queryEmbedding, chunk.embedding),
+      }))
+      .sort((a, b) => b.score - a.score)
       .slice(0, MAX_CHUNKS_RETURNED)
-      .map(({ content, title }) => `### ${title}\n${content}`)
-      .join("\n\n---\n\n");
-  }
+      .filter((entry) => entry.score > 0);
 
-  return rankedChunks
-    .map(({ chunk, score }, index) => {
-      const similarity = score.toFixed(2);
-      return `### ${chunk.title} (độ tương đồng ${similarity})\n${chunk.content}`;
-    })
-    .join("\n\n---\n\n");
+    console.log('Ranked chunks:', rankedChunks.length);
+
+    if (!rankedChunks.length) {
+      return chunks
+        .slice(0, MAX_CHUNKS_RETURNED)
+        .map(({ content, title }) => `### ${title}\n${content}`)
+        .join("\n\n---\n\n");
+    }
+
+    return rankedChunks
+      .map(({ chunk, score }, index) => {
+        const similarity = score.toFixed(2);
+        return `### ${chunk.title} (độ tương đồng ${similarity})\n${chunk.content}`;
+      })
+      .join("\n\n---\n\n");
+  } catch (error) {
+    console.error('Error in getRelevantContext:', error);
+    // Return fallback context
+    return "Đã xảy ra lỗi khi tìm kiếm tài liệu tham chiếu. Vui lòng thử lại.";
+  }
 };
