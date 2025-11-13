@@ -2,7 +2,44 @@ import React, { useState, useEffect } from 'react';
 import { quizQuestions, QuizQuestion } from '../utils/quizData';
 import { CheckCircle, XCircle, RotateCcw, Trophy } from 'lucide-react';
 
+// Fisher-Yates shuffle algorithm
+const shuffleArray = <T,>(array: T[]): T[] => {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+};
+
+// Shuffle questions and their options
+const shuffleQuiz = (questions: QuizQuestion[]): QuizQuestion[] => {
+  // Shuffle the questions array
+  const shuffledQuestions = shuffleArray(questions);
+  
+  // Shuffle options within each question and update correctAnswer index
+  return shuffledQuestions.map((question) => {
+    const options = [...question.options];
+    const correctAnswerValue = options[question.correctAnswer];
+    
+    // Shuffle options
+    const shuffledOptions = shuffleArray(options);
+    
+    // Find new index of correct answer
+    const newCorrectAnswer = shuffledOptions.findIndex(opt => opt === correctAnswerValue);
+    
+    return {
+      ...question,
+      options: shuffledOptions,
+      correctAnswer: newCorrectAnswer
+    };
+  });
+};
+
 export const QuizSection: React.FC = () => {
+  const [shuffledQuestions, setShuffledQuestions] = useState<QuizQuestion[]>(() => 
+    shuffleQuiz(quizQuestions)
+  );
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [showExplanation, setShowExplanation] = useState(false);
@@ -10,8 +47,8 @@ export const QuizSection: React.FC = () => {
   const [answeredQuestions, setAnsweredQuestions] = useState<Set<number>>(new Set());
   const [quizCompleted, setQuizCompleted] = useState(false);
 
-  const currentQuestion = quizQuestions[currentQuestionIndex];
-  const totalQuestions = quizQuestions.length;
+  const currentQuestion = shuffledQuestions[currentQuestionIndex];
+  const totalQuestions = shuffledQuestions.length;
   const progress = (answeredQuestions.size / totalQuestions) * 100;
 
   const handleAnswerSelect = (answerIndex: number) => {
@@ -48,6 +85,8 @@ export const QuizSection: React.FC = () => {
   };
 
   const handleRestart = () => {
+    // Reshuffle questions for a new play
+    setShuffledQuestions(shuffleQuiz(quizQuestions));
     setCurrentQuestionIndex(0);
     setSelectedAnswer(null);
     setShowExplanation(false);
