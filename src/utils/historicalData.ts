@@ -488,11 +488,100 @@ export const historicalEvents: HistoricalEvent[] = [
     year: 1953,
     month: 6,
     title: 'Khai màn chiến dịch Điện Biên Phủ',
-    description: 'Ngày 6/12/1953, Bộ Chính Trị đã quyết định khai màn chiến dịch Điện Biên Phủ và giao quyền chi huy cho tướng Võ Nguyên Giáp, đồng thời ở các địa điểm khác cũng diễn ra hàng loạt các cuộc tiến công của ta trên các hướng Lai Châu, Trung Lào, Tây Nguyên,..',
+    description: 'Ngày 6/12/1953, Bộ Chính Trị đã quyết định khai màn chiến dịch Điện Biên Phủ và giao quyền chi huy cho tướng Võ Nguyên Giáp, đồng thời ở các địa điểm khác cũng diễn ra hàng loạt các cuộc tiến công của ta trên các hướng Lai Châu, Trung Lào, Tây Nguyên,.. nhằm chuẩn bị cho trận quyết chiến ở Điện Biên Phủ.',
     location: { name: 'Điện Biên Phủ', lat: 21.3833, lng: 103.0167 },
     significance: 'critical'
   },
-  
+  {
+    id: '53',
+    year: 1954,
+    month: 3,
+    title: 'Chiến dịch Điện Biên Phủ bắt đầu',
+    description: 'Ngày 13/3/1954, ta thực hiện tiến công vào cứ điểm Điện Biên Phủ với phương châm "đánh chắc, tiến chắc", nổ súng tấn công phân khu phía bắc Mường Thanh.',
+    location: { name: 'Mường Thanh, Điện Biên Phủ', lat: 22.0, lng: 103.5 },
+    significance: 'critical'
+  },
+  {
+    id: '54',
+    year: 1954,
+    month: 5,
+    title: 'Hội Nghị Gienevo khai mạc',
+    description: 'Hội Nghị Gienevo khai mạc, được tổ chức tại thủ đô Pháp, Paris, nhằm thảo luận về tình hình chiến tranh ở Việt Nam và các vấn đề liên quan. Ngày 21/7/1954, ta ký kết với Pháp bản Hiệp định đình chri chiến sự ở Việt Nam. Bản Tuyên bố cuối cùng đã nêu rõ cấc quyền dân tộc cơ bản của ba nước Đông Dương, cam kết chấm dứt chiến tranh, lập lại hòa bình.',
+    location: { name: 'Paris', lat: 48.8566, lng: 2.3522 },
+    significance: 'critical'
+  },
+  {
+    id: '55',
+    year: 1954,
+    month: 7,
+    title: 'Vĩ tuyến 17',
+    description: 'Sau khi hiệp định Gienevo được ký kết, Vĩ tuyến 17 hình thành, chia nước ta ra làm 2 miền với miền Bắc do Đảng lãnh đạo và miền Nam do chính quyền thân Mỹ nắm giữ.',
+    location: { name: 'Vĩ tuyến 17', lat: 17.0, lng: 107.0 },
+    significance: 'critical'
+  },
+  {
+    id: '56',
+    year: 1955,
+    month: 3,
+    title: 'Hội nghị lần thứ 7 và thứ 8 Ban Cháp hành Trung ương Đảng',
+    description: 'Xác định kẻ thù chính của cách mạng là Mỹ và chính quyền tay sai, đề ra phương hướng chiến lược cho cuộc cách mạng.',
+    location: { name: 'Hà Nội', lat: 21.0280, lng: 105.8530 },
+    significance: 'critical'
+  },
+  {
+    id: '57',
+    year: 1955,
+    month: 5,
+    title: 'Quân Pháp rút khỏi miền Bắc Việt Nam',
+    description: 'Ngày 16/5/1955, toán lính Pháp cuối cùng đã phải rút khỏi miền Bắc Việt Nam.',
+    location: { name: 'Vĩ tuyến 17', lat: 17.0, lng: 107.0 },
+    significance: 'critical'
+  },
+  {
+    id: '58',
+    year: 1955,
+    month: 5,
+    title: 'Quân Pháp rút khỏi miền Bắc Việt Nam',
+    description: 'Ngày 16/5/1955, toán lính Pháp cuối cùng đã phải rút khỏi miền Bắc Việt Nam.',
+    location: { name: 'Vĩ tuyến 17', lat: 17.0, lng: 107.0 },
+    significance: 'critical'
+  },
+  {
+    id: '59',
+    year: 1956,
+    month: 7,
+    title: 'Hoàn thành cải cách ruộng đất.',
+    description: 'cải cách ruộng đất đã hoàn thành ở đồng bằng, trung du và miền núi. Tuy có những thành công nhất định, nhưng cũng mắc phải một số sai lầm nghiêm trọng dẫn đến tổn thất trong bộ máy Đảng và quan hệ với nhân dân',
+    location: { name: 'Hà Nội', lat: 21.0280, lng: 105.8530 },
+    significance: 'critical'
+  },
+  {
+    id: '60',
+    year: 1958,
+    month: 11,
+    title: 'Hội nghị lần thứ 14 Ban Cháp hành trung ương Đảng',
+    description: 'Đề ra kế hoạch ba năm phát triển kinh tế, văn hóa và cải tạo xã hộichủ nghĩa đối với kinh tế cá thể và kinh tế tư bản tư doanh.',
+    location: { name: 'Hà Nội', lat: 21.0280, lng: 105.8530 },
+    significance: 'critical'
+  },
+  {
+    id: '61',
+    year: 1959,
+    month: 4,
+    title: 'Hội nghị lần thứ 16 Ban Chấp hành trung ương Đảng',
+    description: 'Thông qua Nghị quyết về vấn đề hợp tác hóa nông nghiệp, xác định hình thức và bước đi của hợp tác xã là: hợp tác hóa đi trước cơ giới hóa. Chủ trương cải tạo hòa bình với giai cấp tư sản.',
+    location: { name: 'Hà Nội', lat: 21.0280, lng: 105.8530 },
+    significance: 'critical'
+  },
+  {
+    id: '62',
+    year: 1955,
+    month: 10,
+    title: 'Chế độ Việt Nam Cộng Hòa được thành lập',
+    description: 'Thủ tướng Ngô Đình Diệm đã phế truất Bảo Đại thông qua trưng cầu dân ý giả tạo và thành lập nên nền đệ nhất Việt Nam Cộng Hòa, thành lập nội các và ban hành Hiến Pháp vào ngày 26/10/1955',
+    location: { name: 'Sài Gòn', lat: 10.8231, lng: 106.6297 },
+    significance: 'critical'
+  },
 ];
 
 // Helper function to calculate distance between two coordinates (in degrees)
