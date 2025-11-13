@@ -300,6 +300,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({ events, selected
         svg.setAttribute('viewBox', '0 0 24 24');
         svg.setAttribute('width', '24');
         svg.setAttribute('height', '24');
+        svg.setAttribute('style', 'display: block;');
 
         const makePath = (d: string, fill: string, stroke: string) => {
           const p = document.createElementNS(svgNS, 'path');
@@ -327,20 +328,21 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({ events, selected
             break;
           }
           case 'war': {
-            // Triangle marker for war events
-            const tri = makePath('M12 2l10 18H2L12 2z', fill, '#ffffff');
+            // Triangle marker for war events (pointing up)
+            // Path: top point at (12,3), bottom left at (3,20), bottom right at (21,20)
+            const tri = makePath('M12 3 L21 20 L3 20 Z', fill, '#ffffff');
             // Exclamation mark inside triangle
             const exLine = document.createElementNS(svgNS, 'line');
             exLine.setAttribute('x1', '12');
-            exLine.setAttribute('y1', '8');
+            exLine.setAttribute('y1', '9');
             exLine.setAttribute('x2', '12');
-            exLine.setAttribute('y2', '13');
+            exLine.setAttribute('y2', '14');
             exLine.setAttribute('stroke', '#ffffff');
             exLine.setAttribute('stroke-width', '2');
             exLine.setAttribute('stroke-linecap', 'round');
             const exDot = document.createElementNS(svgNS, 'circle');
             exDot.setAttribute('cx', '12');
-            exDot.setAttribute('cy', '16');
+            exDot.setAttribute('cy', '17');
             exDot.setAttribute('r', '1.5');
             exDot.setAttribute('fill', '#ffffff');
             svg.appendChild(tri);
