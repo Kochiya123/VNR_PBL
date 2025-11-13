@@ -327,10 +327,25 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({ events, selected
             break;
           }
           case 'war': {
-            const tri = makePath('M12 3l9 16H3l9-16z', fill, '#ffffff');
-            const ex = makePath('M12 8v5m0 3h.01', '#ffffff', '#ffffff');
+            // Triangle marker for war events
+            const tri = makePath('M12 2l10 18H2L12 2z', fill, '#ffffff');
+            // Exclamation mark inside triangle
+            const exLine = document.createElementNS(svgNS, 'line');
+            exLine.setAttribute('x1', '12');
+            exLine.setAttribute('y1', '8');
+            exLine.setAttribute('x2', '12');
+            exLine.setAttribute('y2', '13');
+            exLine.setAttribute('stroke', '#ffffff');
+            exLine.setAttribute('stroke-width', '2');
+            exLine.setAttribute('stroke-linecap', 'round');
+            const exDot = document.createElementNS(svgNS, 'circle');
+            exDot.setAttribute('cx', '12');
+            exDot.setAttribute('cy', '16');
+            exDot.setAttribute('r', '1.5');
+            exDot.setAttribute('fill', '#ffffff');
             svg.appendChild(tri);
-            svg.appendChild(ex);
+            svg.appendChild(exLine);
+            svg.appendChild(exDot);
             break;
           }
           case 'diplomacy': {
